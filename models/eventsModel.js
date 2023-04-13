@@ -14,7 +14,7 @@ class Event {
     static async getAll() {
         try {
             let result = [];
-            let [dbEvents, fields] = await pool.query("SELECT * FROM events");
+            let [dbEvents, fields] = await pool.query("SELECT * FROM Events");
             for (let dbEvent of dbEvents) {
                 result.push(eventFromDB(dbEvent));
             }
