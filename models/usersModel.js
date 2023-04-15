@@ -1,16 +1,23 @@
+const pool = require("../config/database");
+
+function userFromDB(dbObj) {
+    return new User(dbObj.id, dbObj.username, dbObj.password, dbObj.email);
+}
+
 class User {
-    constructor(id, name, email, password) {
+    constructor(id, username, password, email) {
         this.id = id;
-        this.name = name;
-        this.email = email;
+        this.username = username;
         this.password = password;
+        this.email = email;
     }
 
     static async getAll() {
         try {
             let result = [];
-            for (let user of users) {
-                result.push(new User(user.id, user.name, user.email));
+            let [dbUsers, fields] = await pool.query("SELECT * FROM Users");
+            for (let dbUser of dbUsers) {
+                result.push(userFromDB(dbUser));
             }
             return { status: 200, result: result };
         } catch (err) {
@@ -18,8 +25,6 @@ class User {
             return { status: 500, result: err };
         }
     }
-
-
 }
 
 module.exports = User;
