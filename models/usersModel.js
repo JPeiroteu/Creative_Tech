@@ -22,10 +22,4 @@ class User {
 
 }
 
-const users = [
-    new User(1, "John", "john@mail.com", "123"),
-    new User(2, "Mary", "mary@m.pt", "abc"),
-    new User(3, "Bob", "bob@mail.pt", "god")
-];
-
 module.exports = User;
