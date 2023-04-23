@@ -18,8 +18,6 @@ const usersRouter = require("./routes/usersRoutes");
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
 
-app.use(express.static("public"));
-
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
   console.log("Server running at http://localhost:" + port);
