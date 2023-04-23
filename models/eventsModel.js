@@ -1,12 +1,11 @@
 const db = require('../config/database');
 
 class Event {
-  constructor(id, name, description, date, location) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.date = date;
-    this.location = location;
+  constructor(event_name, event_date, event_location, event_description) {
+    this.name = event_name;
+    this.date = event_date;
+    this.location = event_location;
+    this.description = event_description;
   }
 
   static async getAll() {
