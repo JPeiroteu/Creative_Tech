@@ -18,7 +18,7 @@ const usersRouter = require("./routes/usersRoutes");
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
 app.get("/events", function (req, res) {
-  res.sendFile(__dirname + "/public/events.html");
+  res.sendFile(__dirname + "/public/events.ejs");
 });
 
 
