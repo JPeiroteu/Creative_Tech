@@ -1,16 +1,19 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Event = require("../models/eventsModel");
+const Event = require('../models/eventsModel');
 
-router.get("/", async function (req, res, next) {
+// Função para renderizar a página de eventos
+exports.renderEventsPage = async (req, res) => {
   try {
-    console.log("Get all events");
-    let result = await Event.getAll();
-    res.status(result.status).send(result.result);
+    // Recuperar todos os eventos do banco de dados
+    const events = await Event.findAll();
+
+    // Renderizar a página events.html passando os eventos como parâmetro
+    res.render('events.html', { events });
   } catch (err) {
-    console.log(err);
-    res.status(500).send(err);
+    console.error(err);
+    res.status(500).send('Erro ao recuperar eventos');
   }
-});
+};
 
 module.exports = router;
