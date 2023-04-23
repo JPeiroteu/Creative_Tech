@@ -10,36 +10,31 @@
 <body>
   <div class="container">
     <h1>Events</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Date</th>
-          <th>Location</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody id="events">
-      </tbody>
-    </table>
+    <div class="row" id="events">
+    </div>
     <script>
       // Obtém os dados dos eventos do banco de dados
       fetch('/api/events')
         .then(response => response.json())
         .then(events => {
-          // Obtém o elemento tbody da tabela
-          const eventsTable = document.getElementById('events');
+          // Obtém o elemento onde serão exibidos os eventos
+          const eventsContainer = document.getElementById('events');
 
           // Popula a tabela com os dados dos eventos
           events.forEach(event => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${event.name}</td>
-                <td>${event.date}</td>
-                <td>${event.location}</td>
-                <td>${event.description}</td>
-              `;
-            eventsTable.appendChild(row);
+            const eventCard = document.createElement('div');
+            eventCard.classList.add('col-md-4', 'mb-3');
+            eventCard.innerHTML = `
+              <div class="card">
+                <img class="card-img-top" src="${event.image_url}" alt="${event.name}">
+                <div class="card-body">
+                  <h5 class="card-title">${event.name}</h5>
+                  <p class="card-text">${event.description}</p>
+                  <p class="card-text"><small class="text-muted">${event.date}</small></p>
+                </div>
+              </div>
+            `;
+            eventsContainer.appendChild(eventCard);
           });
         });
     </script>
