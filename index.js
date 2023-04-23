@@ -17,9 +17,6 @@ const usersRouter = require("./routes/usersRoutes");
 
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
-app.get('/events', eventsRoutes.renderEventsPage);
-
-
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {

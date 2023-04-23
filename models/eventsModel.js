@@ -1,32 +1,30 @@
-const pool = require("../config/database");
-
-function eventFromDB(dbObj) {
-  return {
-    id: dbObj.event_id,
-    name: dbObj.event_name,
-    date: dbObj.event_date,
-    location: dbObj.event_location,
-    description: dbObj.event_description,
-  };
-}
+const db = require('../config/database');
 
 class Event {
-  constructor(id, name, date, location, description) {
+  constructor(id, name, description, date, location) {
     this.id = id;
     this.name = name;
+    this.description = description;
     this.date = date;
     this.location = location;
-    this.description = description;
   }
 
   static async getAll() {
     try {
-      let result = [];
-      let [dbEvents, fields] = await pool.query("SELECT * FROM Events");
-      for (let dbEvent of dbEvents) {
-        result.push(eventFromDB(dbEvent));
-      }
-      return { status: 200, result: result };
+      const query = 'SELECT * FROM events';
+      const [rows, fields] = await db.promise().query(query);
+
+      const events = rows.map((row) => {
+        return new Event(
+          row.id,
+          row.name,
+          row.description,
+          row.date,
+          row.location
+        );
+      });
+
+      return { status: 200, result: events };
     } catch (err) {
       console.log(err);
       return { status: 500, result: err };

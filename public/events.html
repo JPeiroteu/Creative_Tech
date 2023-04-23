@@ -1,33 +1,42 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos</title>
-    <!-- Adicionar os links do Bootstrap -->
+    <!-- CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   </head>
   <body>
     <div class="container">
       <h1>Eventos</h1>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Descrição</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for event in events %}
-            <tr>
-              <td>{{ event.title }}</td>
-              <td>{{ event.description }}</td>
-              <td>{{ event.date }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+      <hr>
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Descrição</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i=0; i<events.length; i++) { %>
+              <tr>
+                <td><%= events[i].title %></td>
+                <td><%= events[i].description %></td>
+                <td><%= events[i].date %></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <!-- Adicionar os scripts do Bootstrap -->
+    <!-- Scripts do Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>
