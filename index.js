@@ -15,9 +15,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 const eventsRouter = require("./routes/eventsRoutes");
 const usersRouter = require("./routes/usersRoutes");
 
-app.use("/events", express.static(__dirname + '/public'));
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
+
+app.use(express.static("public"));
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
