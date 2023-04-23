@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Events</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Events</h1>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Location</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% events.forEach(function(event) { %>
-          <tr>
-            <td><%= event.name %></td>
-            <td><%= event.date %></td>
-            <td><%= event.location %></td>
-            <td><%= event.description %></td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Events</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Events</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date</th>
+          <th>Location</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody id="events">
+      </tbody>
+    </table>
+    <script>
+      // Obtém os dados dos eventos do banco de dados
+      fetch('/api/events')
+        .then(response => response.json())
+        .then(events => {
+          // Obtém o elemento tbody da tabela
+          const eventsTable = document.getElementById('events');
+
+          // Popula a tabela com os dados dos eventos
+          events.forEach(event => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${event.name}</td>
+                <td>${event.date}</td>
+                <td>${event.location}</td>
+                <td>${event.description}</td>
+              `;
+            eventsTable.appendChild(row);
+          });
+        });
+    </script>
+  </div>
+</body>
+
 </html>
