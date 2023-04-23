@@ -15,11 +15,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const eventsRouter = require("./routes/eventsRoutes");
 const usersRouter = require("./routes/usersRoutes");
 
+app.set('view engine', 'ejs');
+
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
-app.get("/events", function (req, res) {
-  res.sendFile(__dirname + "/public/events.html");
-});
+
 
 
 const port = parseInt(process.env.port || '8080');
