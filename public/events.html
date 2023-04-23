@@ -16,17 +16,19 @@
           <table class="table">
             <thead>
               <tr>
-                <th>Título</th>
-                <th>Descrição</th>
-                <th>Data</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
               <% for(var i=0; i<events.length; i++) { %>
               <tr>
-                <td><%= events[i].title %></td>
-                <td><%= events[i].description %></td>
+                <td><%= events[i].name %></td>
                 <td><%= events[i].date %></td>
+                <td><%= events[i].location %></td>
+                <td><%= events[i].description %></td>
               </tr>
               <% } %>
             </tbody>
