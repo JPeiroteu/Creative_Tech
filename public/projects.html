@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Creative Tech Website</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .header {
+            background-image: url("../images/background.png");
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            color: white;
+            padding-top: 100px;
+        }
+
+        .section {
+            padding: 50px;
+        }
+
+        .section h2 {
+            text-align: center;
+        }
+
+        .col-left {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+        }
+
+        .col-right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 150px;
+        }
+
+        .black {
+            background-color: black;
+            color: white;
+        }
+
+        .carousel-item {
+            height: 300px;
+        }
+
+        .carousel-item img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .relevant-data {
+            display: flex;
+            flex-direction: row;
+        }
+
+        @media (max-width: 767px) {
+            .space {
+                margin-top: 20px;
+            }
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+
+
+<body>
+    <header class="header">
+        <h1>Creative Tech</h1>
+        <p>Onde tudo acontece</p>
+    </header>
+    <div class="bg-light">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h3>CRIAR. DESENVOLVER. INOVAR.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="col-12 text-center">
+            <h1>Projects</h1>
+        </div>
+        <br>
+        <div class="row" id="projects">
+        </div>
+        <script>
+            // Obtém os dados dos projetos do banco de dados
+            fetch('/api/projects')
+                .then(response => response.json())
+                .then(projects => {
+                    // Obtém o elemento onde serão exibidos os projetos
+                    const projectsContainer = document.getElementById('projects');
+
+                    // Popula a tabela com os dados dos projetos
+                    projects.forEach(project => {
+                        const projectCard = document.createElement('div');
+                        projectCard.classList.add('col-md-4', 'mb-3');
+                        projectCard.innerHTML = `
+              <div class="card">
+                <img class="card-img-top" src="${project.image}" alt="${project.name}">
+                <div class="card-body">
+                  <h5 class="card-title">${project.name}</h5>
+                  <p class="card-text">${project.description}</p>
+                </div>
+              </div>
+            `;
+                        projectsContainer.appendChild(projectCard);
+                    });
+                });
+        </script>
+    </div>
+
+    <br>
+
+    <footer class="bg-light" style="padding-top: 3rem!important;">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-md-3 mb-3">
+                    <h5>Address</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Av. Dom Carlos I, 4</a>
+                        </li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">1200-649</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Lisboa, Portugal</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-3 mb-3">
+                    <h5>Contacts</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">808 203 777</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">email@email.com</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-5 offset-md-1 mb-3">
+                    <form>
+                        <h5>Subscribe to our newsletter</h5>
+                        <p>Monthly digest of what's new and exciting from us.</p>
+                        <div class="d-flex flex-column flex-sm-row w-100 gap-2">
+                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+                            <button class="btn btn-primary ml-3" type="button">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column flex-sm-row justify-content-between py-4 border-top"
+                style="margin-top: 1.5rem!important;">
+                <p>&copy; 2022 Company, Inc. All rights reserved.</p>
+                <ul class="list-unstyled d-flex">
+                    <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use xlink:href="#twitter" />
+                            </svg></a></li>
+                    <li class="ms-3 ml-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use xlink:href="#instagram" />
+                            </svg></a></li>
+                    <li class="ms-3 ml-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24">
+                                <use xlink:href="#facebook" />
+                            </svg></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
