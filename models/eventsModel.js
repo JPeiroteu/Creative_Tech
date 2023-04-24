@@ -1,13 +1,13 @@
 const pool = require("../config/database");
 
 function eventFromDB(dbObj) {
-  return new Event(
-    dbObj.event_id,
-    dbObj.event_name,
-    dbObj.event_date,
-    dbObj.event_location,
-    dbObj.event_description
-  );
+  return {
+    id: dbObj.event_id,
+    name: dbObj.event_name,
+    date: dbObj.event_date,
+    location: dbObj.event_location,
+    description: dbObj.event_description,
+  };
 }
 
 class Event {
