@@ -32,6 +32,22 @@ class Event {
       return { status: 500, result: err };
     }
   }
+
+  async isUserGoing(eventId, userId) {
+    const query = 'SELECT * FROM User_Events WHERE event_id = ? AND user_id = ? AND is_going = 1';
+    const result = await pool.query(query, [eventId, userId]);
+    return result.length > 0;
+  }
+
+  async addAttendee(eventId, userId) {
+    const query = 'INSERT INTO User_Events (event_id, user_id, is_going) VALUES (?, ?, 1)';
+    await pool.query(query, [eventId, userId]);
+  }
+
+  async removeAttendee(eventId, userId) {
+    const query = 'DELETE FROM User_Events WHERE event_id = ? AND user_id = ?';
+    await pool.query(query, [eventId, userId]);
+    }
 }
 
 module.exports = Event;
