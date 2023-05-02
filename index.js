@@ -15,10 +15,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 const eventsRouter = require("./routes/eventsRoutes");
 const usersRouter = require("./routes/usersRoutes");
 const projectsRouter = require("./routes/projectsRoutes");
+const loginRouter = require("./routes/loginRoutes");
 
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
+app.use("/api/login", loginRouter);
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {

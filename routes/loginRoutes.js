@@ -1,37 +1,25 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const { Pool } = require('pg');
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-});
-
+const express = require("express");
 const router = express.Router();
+const User = require("../models/usersModel");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-// Login endpoint
-router.post('/api/login', async (req, res) => {
+router.post("/", async function (req, res, next) {
   try {
-    const { username, password } = req.body;
-
-    // Retrieve user from database
-    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
-    const user = result.rows[0];
-
-    // Check if user exists and password matches
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).send({ message: 'Invalid username or password' });
+    const { email, password } = req.body;
+    const user = await User.getByEmail(email);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
     }
-
-    // Generate JWT token
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-
-    // Return token to client
-    return res.send({ token });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).send({ message: 'Internal server error' });
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
+    return res.status(200).json({ token });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 
