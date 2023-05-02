@@ -1,25 +1,29 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const User = require("../models/usersModel");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const User = require('../models/usersModel');
 
-router.post("/", async function (req, res, next) {
+router.post('/login', async function(req, res, next) {
   try {
     const { email, password } = req.body;
+
+    // Verifica se o email existe na base de dados
     const user = await User.getByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(401).send({ message: 'Email ou senha incorretos.' });
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+
+    // Verifica se a senha está correta
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(401).send({ message: 'Email ou senha incorretos.' });
     }
-    const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET);
-    return res.status(200).json({ token });
+
+    // Se chegou aqui, o login foi bem-sucedido
+    res.render('successful', { name: user.name });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ message: "Internal server error" });
+    res.status(500).send({ message: 'Ocorreu um erro ao processar a requisição.' });
   }
 });
 

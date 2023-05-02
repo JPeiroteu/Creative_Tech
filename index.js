@@ -20,7 +20,7 @@ const loginRouter = require("./routes/loginRoutes");
 app.use("/api/events", eventsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
-app.use("/api/login", loginRouter);
+app.use("/api/users/login", loginRouter);
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
