@@ -1,29 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const User = require('../models/usersModel');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-router.post('/login', async function(req, res, next) {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    const user = await User.findByEmail(email);
 
-    // Verifica se o email existe na base de dados
-    const user = await User.getByEmail(email);
-    if (!user) {
-      return res.status(401).send({ message: 'Email ou senha incorretos.' });
+    if (!user || !bcrypt.compareSync(password, user.password)) {
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    // Verifica se a senha está correta
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(401).send({ message: 'Email ou senha incorretos.' });
-    }
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET);
 
-    // Se chegou aqui, o login foi bem-sucedido
-    res.render('successful', { name: user.name });
+    return res.status(200).json({ token });
   } catch (err) {
     console.log(err);
-    res.status(500).send({ message: 'Ocorreu um erro ao processar a requisição.' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 });
 
