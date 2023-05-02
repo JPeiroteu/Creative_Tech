@@ -158,14 +158,11 @@
     <div class="row" id="events">
     </div>
     <script>
-      // Obtém os dados dos eventos do banco de dados
       fetch('/api/events')
         .then(response => response.json())
         .then(events => {
-          // Obtém o elemento onde serão exibidos os eventos
           const eventsContainer = document.getElementById('events');
 
-          // Popula a tabela com os dados dos eventos
           events.forEach(event => {
             const eventCard = document.createElement('div');
             eventCard.classList.add('col-md-4', 'mb-3');
@@ -176,13 +173,28 @@
                   <h5 class="card-title">${event.name}</h5>
                   <p class="card-text">${event.description}</p>
                   <p class="card-text"><small class="text-muted">${event.date}</small></p>
-                  <button onclick="incrementAttendees(${event.id})">+1</button>
+                  <button class="btn btn-primary" onclick="attendEvent(${event.id}, true)">Participar</button>
+                  <button class="btn btn-secondary" onclick="attendEvent(${event.id}, false)">Cancelar participação</button>
+                  <span>${event.attendees} participantes</span>
                 </div>
               </div>
             `;
             eventsContainer.appendChild(eventCard);
           });
         });
+
+      function attendEvent(eventId, isGoing) {
+        fetch(`/api/events/${eventId}/attendees?isGoing=${isGoing}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' }
+        })
+          .then(response => response.json())
+          .then(data => {
+            const eventCard = document.getElementById(`event-${eventId}`);
+            const attendeesSpan = eventCard.querySelector('span');
+            attendeesSpan.innerText = `${data.attendees} participantes`;
+          });
+      }
     </script>
   </div>
   <br>
@@ -193,8 +205,7 @@
         <div class="col-6 col-md-3 mb-3">
           <h5>Address</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Av. Dom Carlos I, 4</a>
-            </li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Av. Dom Carlos I, 4</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">1200-649</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Lisboa, Portugal</a></li>
           </ul>
