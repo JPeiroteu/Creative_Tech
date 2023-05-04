@@ -1,25 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const User = require('../models/usersModel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const User = require("../models/usersModel");
 
-router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findByEmail(email);
+router.post("/login", async function (req, res, next) {
+  const { email, password } = req.body;
+  const user = await User.authentication(email, password);
 
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      return res.status(401).json({ error: 'Invalid email or password' });
-    }
-
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET);
-
-    return res.status(200).json({ token });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ error: 'Internal server error' });
+  if (!user) {
+    return res.status(401).json({
+      message: "Invalid email or password",
+    });
   }
+
+  // session setup
+  req.session.user = user;
+  res.redirect("/");
+  console.log("User logged in");
+});
+
+router.get("/logout", function (req, res) {
+  req.session.destroy(function () {
+    console.log("User logged out");
+  });
+  res.redirect("/");
 });
 
 module.exports = router;

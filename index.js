@@ -1,5 +1,6 @@
 require('dotenv').config();
 var express = require('express');
+const session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
@@ -11,16 +12,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+  secret: 'my-secret', 
+  resave: false, 
+  saveUninitialized: true 
+}));
+
 
 const eventsRouter = require("./routes/eventsRoutes");
-const usersRouter = require("./routes/usersRoutes");
 const projectsRouter = require("./routes/projectsRoutes");
 const loginRouter = require("./routes/loginRoutes");
 
 app.use("/api/events", eventsRouter);
-app.use("/api/users", usersRouter);
 app.use("/api/projects", projectsRouter);
-app.use("/api/users/login", loginRouter);
+app.use("/api/users", loginRouter);
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
