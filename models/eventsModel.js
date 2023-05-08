@@ -42,4 +42,27 @@ class Event {
     }
 }
 
-module.exports = Event;
+class SpecialEvent extends Event {
+  constructor(id, name, date, location, description, maxParticipants, price) {
+    super(id, name, date, location, description);
+    this.maxParticipants = maxParticipants;
+    this.price = price;
+  }
+
+  static async allSpecialEvents() {
+    try {
+      let result = [];
+      let [rows, _] = await pool.query("SELECT * FROM SpecialEvents");
+      for (let row of rows) {
+        let event = new SpecialEvent(row.event_id, row.event_name, row.event_date, row.event_location, row.event_description, row.event_maxParticipants, row.event_price);
+        result.push(event);
+      }
+      return { status: 200, result: result };
+    } catch (err) {
+      console.log(err);
+      return { status: 500, result: [] };
+    }
+  }
+}
+
+module.exports = { Event, SpecialEvent };
