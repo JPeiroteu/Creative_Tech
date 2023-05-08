@@ -5,7 +5,7 @@ const Event = require("../models/eventsModel");
 router.get("/", async function (req, res, next) {
   try {
     console.log("Get all events");
-    let result = await Event.getAll();
+    let result = await Event.allEvents();
     res.status(result.status).send(result.result);
   } catch (err) {
     console.log(err);
