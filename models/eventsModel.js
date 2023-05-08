@@ -52,10 +52,10 @@ class SpecialEvent extends Event {
   static async allSpecialEvents() {
     try {
       let result = [];
-      let [rows, _] = await pool.query("SELECT * FROM SpecialEvents");
+      let [rows, _] = await pool.query("SELECT id, name, date, location, description, maxParticipants, price FROM Events WHERE maxParticipants IS NOT NULL AND price IS NOT NULL");
       for (let row of rows) {
-        let event = new SpecialEvent(row.event_id, row.event_name, row.event_date, row.event_location, row.event_description, row.event_maxParticipants, row.event_price);
-        result.push(event);
+        let specialEvent = new SpecialEvent(row.id, row.name, row.date, row.location, row.description, row.maxParticipants, row.price);
+        result.push(specialEvent);
       }
       return { status: 200, result: result };
     } catch (err) {
