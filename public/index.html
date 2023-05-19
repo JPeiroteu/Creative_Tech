@@ -331,10 +331,9 @@
 					  titulo: 'Evento 3',
 					  descricao: 'Descrição Evento 3'
 					}
-					// Adicione mais objetos de evento conforme necessário
 				  ];
 			  
-				  // Função para embaralhar o array de eventos aleatoriamente
+				  // Função para fazer random aos eventos do array
 				  function shuffleArray(array) {
 					for (let i = array.length - 1; i > 0; i--) {
 					  const j = Math.floor(Math.random() * (i + 1));
@@ -342,12 +341,11 @@
 					}
 					return array;
 				  }
+
+				  const eventosRandom = shuffleArray(eventos);
 			  
-				  // Embaralhe os eventos aleatoriamente
-				  const eventosEmbaralhados = shuffleArray(eventos);
-			  
-				  // Atualize as imagens, títulos e descrições do carrossel com os eventos baralhados
-				  eventosEmbaralhados.forEach((evento, index) => {
+				  // Atualize as imagens, títulos e descrições do carrossel com os eventos aleatorios
+				  eventosRandom.forEach((evento, index) => {
 					imagens[index].src = evento.imagem;
 					imagens[index].alt = evento.titulo;
 					titulos[index].innerText = evento.titulo;
