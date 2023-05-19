@@ -1,5 +1,5 @@
 const mysql = require("mysql2/promise");
-
+/*
 const pool = mysql.createPool({
     host: "db4free.net",
     user: "jpeiro",
@@ -7,6 +7,7 @@ const pool = mysql.createPool({
     database: "creative_tech",
     connectionLimit: 20
 });
+*/
 
 /*
 const mysql = require("mysql2/promise");
@@ -18,6 +19,6 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     connectionLimit: 20
 });
-*/
+
 
 module.exports = pool;
