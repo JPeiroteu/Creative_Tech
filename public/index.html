@@ -260,50 +260,105 @@
 
 			<div class="col-sm-12 col-md-6 space">
 				<div id="carouselEventos" class="carousel slide" data-ride="carousel">
-					<ul class="carousel-indicators">
-						<li data-target="#carouselEventos" data-slide-to="0" class="active"></li>
-						<li data-target="#carouselEventos" data-slide-to="1"></li>
-						<li data-target="#carouselEventos" data-slide-to="2"></li>
-					</ul>
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-						  <a href="events.html">
-							<img src="images/events/1.png" alt="Evento 1" style="opacity: 0.5;">
-							<div class="carousel-caption" style="color: black">
-							  <h3>Evento 1</h3>
-							  <p>Descrição Evento 1</p>
-							</div>
-						  </a>
+				  <ul class="carousel-indicators">
+					<!-- Indicators -->
+					<li data-target="#carouselEventos" data-slide-to="0" class="active"></li>
+					<li data-target="#carouselEventos" data-slide-to="1"></li>
+					<li data-target="#carouselEventos" data-slide-to="2"></li>
+				  </ul>
+				  <div class="carousel-inner">
+					<!-- Carousel items -->
+					<div class="carousel-item active">
+					  <a href="events.html">
+						<img src="images/events/1.png" alt="Evento 1" style="opacity: 0.5;">
+						<div class="carousel-caption" style="color: black">
+						  <h3>Evento 1</h3>
+						  <p>Descrição Evento 1</p>
 						</div>
-						<div class="carousel-item">
-						  <a href="events.html">
-							<img src="images/events/2.png" alt="Evento 2" style="opacity: 0.5;">
-							<div class="carousel-caption" style="color: black">
-							  <h3>Evento 2</h3>
-							  <p>Descrição Evento 2</p>
-							</div>
-						  </a>
-						</div>
-						<div class="carousel-item">
-						  <a href="events.html">
-							<img src="images/events/3.png" alt="Evento 3" style="opacity: 0.5;">
-							<div class="carousel-caption" style="color: black">
-							  <h3>Evento 3</h3>
-							  <p>Descrição Evento 3</p>
-							</div>
-						  </a>
-						</div>
+					  </a>
 					</div>
-					<a class="carousel-control-prev" href="#carouselEventos" role="button" data-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="sr-only">Anterior</span>
-					</a>
-					<a class="carousel-control-next" href="#carouselEventos" role="button" data-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="sr-only">Próximo</span>
-					</a>
+					<div class="carousel-item">
+					  <a href="events.html">
+						<img src="images/events/2.png" alt="Evento 2" style="opacity: 0.5;">
+						<div class="carousel-caption" style="color: black">
+						  <h3>Evento 2</h3>
+						  <p>Descrição Evento 2</p>
+						</div>
+					  </a>
+					</div>
+					<div class="carousel-item">
+					  <a href="events.html">
+						<img src="images/events/3.png" alt="Evento 3" style="opacity: 0.5;">
+						<div class="carousel-caption" style="color: black">
+						  <h3>Evento 3</h3>
+						  <p>Descrição Evento 3</p>
+						</div>
+					  </a>
+					</div>
+				  </div>
+				  <a class="carousel-control-prev" href="#carouselEventos" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Anterior</span>
+				  </a>
+				  <a class="carousel-control-next" href="#carouselEventos" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Próximo</span>
+				  </a>
 				</div>
-			  </div>			  
+			  </div>
+			  
+			  <script>
+				// Função para exibir imagens aleatórias no carrossel
+				function exibirImagensAleatorias() {
+				  const imagens = document.querySelectorAll('#carouselEventos .carousel-item img');
+				  const titulos = document.querySelectorAll('#carouselEventos .carousel-item h3');
+				  const descricoes = document.querySelectorAll('#carouselEventos .carousel-item p');
+			  
+				  // Array com os detalhes dos eventos
+				  const eventos = [
+					{
+					  imagem: 'images/events/1.png',
+					  titulo: 'Evento 1',
+					  descricao: 'Descrição Evento 1'
+					},
+					{
+					  imagem: 'images/events/2.png',
+					  titulo: 'Evento 2',
+					  descricao: 'Descrição Evento 2'
+					},
+					{
+					  imagem: 'images/events/3.png',
+					  titulo: 'Evento 3',
+					  descricao: 'Descrição Evento 3'
+					}
+					// Adicione mais objetos de evento conforme necessário
+				  ];
+			  
+				  // Função para embaralhar o array de eventos aleatoriamente
+				  function shuffleArray(array) {
+					for (let i = array.length - 1; i > 0; i--) {
+					  const j = Math.floor(Math.random() * (i + 1));
+					  [array[i], array[j]] = [array[j], array[i]];
+					}
+					return array;
+				  }
+			  
+				  // Embaralhe os eventos aleatoriamente
+				  const eventosEmbaralhados = shuffleArray(eventos);
+			  
+				  // Atualize as imagens, títulos e descrições do carrossel com os eventos baralhados
+				  eventosEmbaralhados.forEach((evento, index) => {
+					imagens[index].src = evento.imagem;
+					imagens[index].alt = evento.titulo;
+					titulos[index].innerText = evento.titulo;
+					descricoes[index].innerText = evento.descricao;
+				  });
+				}
+			  
+				exibirImagensAleatorias();
+			  </script>
+			  
+
 		</div>
 	</div>
 
