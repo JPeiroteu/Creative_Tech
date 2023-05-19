@@ -8,9 +8,6 @@ const pool = mysql.createPool({
     connectionLimit: 20
 });
 
-module.exports = pool;
-
-
 /*
 const mysql = require("mysql2/promise");
 
@@ -21,6 +18,6 @@ const pool = mysql.createPool({
     database: process.env.DB_NAME,
     connectionLimit: 20
 });
+*/
 
 module.exports = pool;
-*/

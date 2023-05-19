@@ -162,7 +162,7 @@
         .then(response => response.json())
         .then(events => {
           const eventsContainer = document.getElementById('events');
-
+    
           events.forEach(event => {
             const eventCard = document.createElement('div');
             eventCard.classList.add('col-md-4', 'mb-3');
@@ -175,27 +175,26 @@
                   <p class="card-text"><small class="text-muted">${event.date}</small></p>
                   <button class="btn btn-primary" onclick="attendEvent(${event.id}, true)">Participar</button>
                   <button class="btn btn-secondary" onclick="attendEvent(${event.id}, false)">Cancelar participação</button>
-                  <span>${event.attendees} participantes</span>
+                  <span id="attendees-${event.id}">${event.attendees} participantes</span>
                 </div>
               </div>
             `;
             eventsContainer.appendChild(eventCard);
           });
         });
-
+    
       function attendEvent(eventId, isGoing) {
-        fetch(`/api/events/${eventId}/attendees?isGoing=${isGoing}`, {
-          method: 'PUT',
+        fetch(`/api/events/${eventId}/attendees`, {
+          method: isGoing ? 'POST' : 'DELETE',
           headers: { 'Content-Type': 'application/json' }
         })
           .then(response => response.json())
           .then(data => {
-            const eventCard = document.getElementById(`event-${eventId}`);
-            const attendeesSpan = eventCard.querySelector('span');
+            const attendeesSpan = document.getElementById(`attendees-${eventId}`);
             attendeesSpan.innerText = `${data.attendees} participantes`;
           });
       }
-    </script>
+    </script>    
   </div>
   <br>
 
