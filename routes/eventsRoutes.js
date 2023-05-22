@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Event = require("../models/eventsModel");
+const EventModel = require("../models/eventsModel");
 
 router.get("/", async function (req, res, next) {
   try {
     console.log("Get all events");
-    let result = await Event.allEvents();
+    let result = await EventModel.allEvents();
     res.status(result.status).send(result.result);
   } catch (err) {
     console.log(err);
