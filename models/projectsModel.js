@@ -1,5 +1,15 @@
 const pool = require("../config/database");
 
+//db
+function projectFromDB(dbObj) {
+  return new Project(
+    dbObj.project_id,
+    dbObj.project_name,
+    dbObj.project_description,
+    dbObj.project_image
+  );
+}
+
 class Project {
   constructor(id, name, description, image) {
     this.id = id;
@@ -11,14 +21,9 @@ class Project {
   static async getAll() {
     try {
       let result = [];
-      let [dbProjects, fields] = await pool.query("SELECT * FROM Projects");
+      let [dbProjects, _] = await pool.query("SELECT * FROM Projects");
       for (let dbProject of dbProjects) {
-        result.push(new Project(
-          dbProject.project_id,
-          dbProject.project_name,
-          dbProject.project_description,
-          dbProject.project_image
-        ));
+        result.push(projectFromDB(dbProject));
       }
       return { status: 200, result: result };
     } catch (err) {

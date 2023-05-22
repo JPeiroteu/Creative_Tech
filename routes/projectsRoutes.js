@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Project = require("../models/projectsModel");
+const ProjectModel = require("../models/projectsModel");
 
 router.get("/", async function (req, res, next) {
   try {
     console.log("Get all projects");
-    let result = await Project.getAll();
+    let result = await ProjectModel.getAll();
     res.status(result.status).send(result.result);
   } catch (err) {
     console.log(err);
