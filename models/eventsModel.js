@@ -38,6 +38,17 @@ class Event {
       return { status: 500, result: err };
     }
   }
+
+  static async isUserGoing(eventId, userId) {
+    const query = 'SELECT * FROM User_Events WHERE event_id = ? AND user_id = ?';
+    const [rows, _] = await pool.query(query, [eventId, userId]);
+    return rows.length > 0;
+  }
+
+  static async addAttendee(eventId, userId) {
+    const query = 'INSERT INTO User_Events (event_id, user_id, is_going) VALUES (?, ?, 1)';
+    await pool.query(query, [eventId, userId]);
+  }
 }
 
 module.exports = Event;

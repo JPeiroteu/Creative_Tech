@@ -13,7 +13,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.post('/api/events/:id/attendees', async (req, res) => {
+router.post('/:id/attendees', async (req, res) => {
   try {
     const eventId = req.params.id;
     const userId = req.session.userId;
@@ -34,7 +34,7 @@ router.post('/api/events/:id/attendees', async (req, res) => {
   }
 });
 
-router.delete('/api/events/:id/attendees', async (req, res) => {
+router.delete('/:id/attendees', async (req, res) => {
   try {
     const eventId = req.params.id;
     const userId = req.session.userId;
