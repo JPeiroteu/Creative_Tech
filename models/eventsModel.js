@@ -7,22 +7,24 @@ function eventFromDB(dbObj) {
     date: dbObj.event_date,
     location: dbObj.event_location,
     description: dbObj.event_description,
+    image: dbObj.event_image,
   };
 }
 
 class Event {
-  constructor(id, name, date, location, description) {
+  constructor(id, name, date, location, description, image) {
     this.id = id;
     this.name = name;
     this.date = date;
     this.location = location;
     this.description = description;
+    this.image = image;
   }
 
   static async allEvents() {
     try {
       let result = [];
-      let [dbEvents, fields] = await pool.query("SELECT * FROM Events");
+      let [dbEvents, _] = await pool.query("SELECT * FROM Events");
       for (let dbEvent of dbEvents) {
         let event = eventFromDB(dbEvent);
         // Obter o número total de participantes para cada evento

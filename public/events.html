@@ -136,6 +136,40 @@
 
 
 <body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/news.html">News</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/projects.html">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/events.html">Events</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        {{username}}
+      </span>
+      <form action="/logout" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
+    </div>
+  </nav>
+
+
   <header class="header">
     <h1>Creative Tech</h1>
     <p>Onde tudo acontece</p>
@@ -144,7 +178,7 @@
     <div class="container py-4">
       <div class="row">
         <div class="col-12 text-center">
-          <h3>CRIAR. DESENVOLVER. INOVAR.</h3>
+          <h3>CREATE. DEVELOP. INNOVATE.</h3>
         </div>
       </div>
     </div>
@@ -162,13 +196,13 @@
         .then(response => response.json())
         .then(events => {
           const eventsContainer = document.getElementById('events');
-    
+
           events.forEach(event => {
             const eventCard = document.createElement('div');
             eventCard.classList.add('col-md-4', 'mb-3');
             eventCard.innerHTML = `
               <div class="card">
-                <img class="card-img-top" src="images/events/1.png" alt="${event.name}"> <!--${event.image_url}-->
+                <img class="card-img-top" src="${event.image}" alt="${event.name}"> 
                 <div class="card-body">
                   <h5 class="card-title">${event.name}</h5>
                   <p class="card-text">${event.description}</p>
@@ -182,7 +216,7 @@
             eventsContainer.appendChild(eventCard);
           });
         });
-    
+
       function attendEvent(eventId, isGoing) {
         fetch(`/api/events/${eventId}/attendees`, {
           method: isGoing ? 'POST' : 'DELETE',
@@ -194,7 +228,7 @@
             attendeesSpan.innerText = `${data.attendees} participantes`;
           });
       }
-    </script>    
+    </script>
   </div>
   <br>
 
