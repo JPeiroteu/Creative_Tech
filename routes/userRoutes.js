@@ -12,10 +12,25 @@ router.post("/login", async function (req, res, next) {
     });
   }
 
-  // session setup
+  // Configuração da sessão
   req.session.user = user;
+
+  // Redirecionamento após o login
   res.redirect("/");
-  console.log("User logged in");
+});
+
+router.get("/check-login", function (req, res) {
+  if (req.session.user) {
+    res.json({
+      isLoggedIn: true,
+      user: req.session.user
+    });
+  } else {
+    res.json({
+      isLoggedIn: false,
+      user: null
+    });
+  }
 });
 
 router.get("/logout", function (req, res) {

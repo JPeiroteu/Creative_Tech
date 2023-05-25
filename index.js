@@ -12,10 +12,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
-  secret: 'my-secret', 
-  resave: false, 
-  saveUninitialized: true 
+  secret: "secret-key",
+  resave: true,
+  saveUninitialized: true,
 }));
 
 
@@ -26,6 +27,11 @@ const userRouter = require("./routes/userRoutes");
 app.use("/api/events", eventsRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/users", userRouter);
+
+app.get("/", function (req, res) {
+  const username = req.session.user ? req.session.user.username : "";
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
