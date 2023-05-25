@@ -21,11 +21,11 @@ app.use(session({
 
 const eventsRouter = require("./routes/eventsRoutes");
 const projectsRouter = require("./routes/projectsRoutes");
-const loginRouter = require("./routes/loginRoutes");
+const userRouter = require("./routes/userRoutes");
 
 app.use("/api/events", eventsRouter);
 app.use("/api/projects", projectsRouter);
-app.use("/api/users", loginRouter);
+app.use("/api/users", userRouter);
 
 const port = parseInt(process.env.port || '8080');
 app.listen(port, function () {
