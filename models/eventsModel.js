@@ -7,16 +7,18 @@ function eventFromDB(dbObj) {
     date: dbObj.event_date,
     location: dbObj.event_location,
     description: dbObj.event_description,
+    image: dbObj.event_image,
   };
 }
 
 class Event {
-  constructor(id, name, date, location, description) {
+  constructor(id, name, date, location, description, image) {
     this.id = id;
     this.name = name;
     this.date = date;
     this.location = location;
     this.description = description;
+    this.image = image;
   }
 
   static async allEvents() {
