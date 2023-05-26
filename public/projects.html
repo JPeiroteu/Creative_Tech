@@ -13,7 +13,7 @@
     <style>
         .header {
             background-image: url("../images/background.png");
-            height: 350px;
+            height: 375px;
             background-size: cover;
             background-position: center;
             text-align: center;
@@ -136,6 +136,65 @@
 
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 0.5rem 3rem;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about.html">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news.html">News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/events.html">Events</a>
+                </li>
+            </ul>
+            <span class="navbar-text" id="username"></span>
+            <form action="/api/users/logout" method="get" id="logout-form" style="display: none;">
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+            <form action="/login.html">
+                <button type="submit" class="btn btn-primary" id="login-button">Login</button>
+            </form>
+        </div>
+    </nav>
+
+    <script>
+        // Verifica se o usuário está logado e atualiza a interface
+        function updateInterface(isLoggedIn, user) {
+            if (isLoggedIn) {
+                document.getElementById('username').textContent = user.username;
+                document.getElementById('logout-form').style.display = 'block';
+                document.getElementById('login-button').style.display = 'none';
+            } else {
+                document.getElementById('username').textContent = '';
+                document.getElementById('logout-form').style.display = 'none';
+                document.getElementById('login-button').style.display = 'block';
+            }
+        }
+
+        function checkLoginStatus() {
+            fetch('/api/users/check-login')
+                .then(response => response.json())
+                .then(data => {
+                    updateInterface(data.isLoggedIn, data.user);
+                });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+        });
+    </script>
     <header class="header">
         <h1>Creative Tech</h1>
         <p>Onde tudo acontece</p>

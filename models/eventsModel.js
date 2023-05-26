@@ -8,6 +8,7 @@ function eventFromDB(dbObj) {
     location: dbObj.event_location,
     description: dbObj.event_description,
     image: dbObj.event_image,
+    image: dbObj.event_image,
   };
 }
 
