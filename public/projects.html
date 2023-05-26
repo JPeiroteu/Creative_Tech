@@ -158,8 +158,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/events.html">Events</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/faqs.html">FAQs</a>
+                </li>
             </ul>
-            <span class="navbar-text" id="username"></span>
+            <span class="navbar-text" id="username" style="margin-right: 10px;"></span>
             <form action="/api/users/logout" method="get" id="logout-form" style="display: none;">
                 <button type="submit" class="btn btn-danger">Logout</button>
             </form>
@@ -169,32 +172,6 @@
         </div>
     </nav>
 
-    <script>
-        // Verifica se o usuário está logado e atualiza a interface
-        function updateInterface(isLoggedIn, user) {
-            if (isLoggedIn) {
-                document.getElementById('username').textContent = user.username;
-                document.getElementById('logout-form').style.display = 'block';
-                document.getElementById('login-button').style.display = 'none';
-            } else {
-                document.getElementById('username').textContent = '';
-                document.getElementById('logout-form').style.display = 'none';
-                document.getElementById('login-button').style.display = 'block';
-            }
-        }
-
-        function checkLoginStatus() {
-            fetch('/api/users/check-login')
-                .then(response => response.json())
-                .then(data => {
-                    updateInterface(data.isLoggedIn, data.user);
-                });
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            checkLoginStatus();
-        });
-    </script>
     <header class="header">
         <h1>Creative Tech</h1>
         <p>Onde tudo acontece</p>
@@ -203,7 +180,7 @@
         <div class="container py-4">
             <div class="row">
                 <div class="col-12 text-center">
-                    <h3>CRIAR. DESENVOLVER. INOVAR.</h3>
+                    <h3>CREATE. DEVELOP. INNOVATE.</h3>
                 </div>
             </div>
         </div>
@@ -217,26 +194,23 @@
         <div class="row" id="projects">
         </div>
         <script>
-            // Obtém os dados dos projetos do banco de dados
             fetch('/api/projects')
                 .then(response => response.json())
                 .then(projects => {
-                    // Obtém o elemento onde serão exibidos os projetos
                     const projectsContainer = document.getElementById('projects');
 
-                    // Popula a tabela com os dados dos projetos
                     projects.forEach(project => {
                         const projectCard = document.createElement('div');
                         projectCard.classList.add('col-md-4', 'mb-3');
                         projectCard.innerHTML = `
-              <div class="card">
-                <img class="card-img-top" src="${project.image}" alt="${project.name}">
-                <div class="card-body">
-                  <h5 class="card-title">${project.name}</h5>
-                  <p class="card-text">${project.description}</p>
-                </div>
-              </div>
-            `;
+                            <div class="card">
+                                <img class="card-img-top" src="${project.image}" alt="${project.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${project.name}</h5>
+                                    <p class="card-text">${project.description}</p>
+                                </div>
+                            </div>
+                        `;
                         projectsContainer.appendChild(projectCard);
                     });
                 });

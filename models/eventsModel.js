@@ -8,7 +8,8 @@ function eventFromDB(dbObj) {
     location: dbObj.event_location,
     description: dbObj.event_description,
     image: dbObj.event_image,
-    image: dbObj.event_image,
+    isGoing: false,
+    attendees: 0
   };
 }
 
@@ -20,18 +21,27 @@ class Event {
     this.location = location;
     this.description = description;
     this.image = image;
+    this.isGoing = false;
+    this.attendees = 0;
   }
 
-  static async allEvents() {
+  static async allEvents(userId) {
     try {
       let result = [];
       let [dbEvents, _] = await pool.query("SELECT * FROM Events");
       for (let dbEvent of dbEvents) {
         let event = eventFromDB(dbEvent);
+
+        // Verificar se o usuário está participando deste evento
+        if (userId) {
+          const isGoing = await Event.isUserGoing(dbEvent.event_id, userId);
+          event.isGoing = isGoing;
+        }
+
         // Obter o número total de participantes para cada evento
-        const query = 'SELECT COUNT(*) as attendees FROM User_Events WHERE event_id = ? AND is_going = 1';
-        const [rows, _] = await pool.query(query, [dbEvent.event_id]);
-        event.attendees = rows[0].attendees;
+        const attendees = await Event.getAttendeesCount(dbEvent.event_id);
+        event.attendees = attendees;
+
         result.push(event);
       }
       result.reverse();
@@ -51,6 +61,17 @@ class Event {
   static async addAttendee(eventId, userId) {
     const query = 'INSERT INTO User_Events (event_id, user_id, is_going) VALUES (?, ?, 1)';
     await pool.query(query, [eventId, userId]);
+  }
+
+  static async removeAttendee(eventId, userId) {
+    const query = 'DELETE FROM User_Events WHERE event_id = ? AND user_id = ?';
+    await pool.query(query, [eventId, userId]);
+  }
+
+  static async getAttendeesCount(eventId) {
+    const query = 'SELECT COUNT(*) as attendees FROM User_Events WHERE event_id = ? AND is_going = 1';
+    const [rows, _] = await pool.query(query, [eventId]);
+    return rows[0].attendees;
   }
 }
 

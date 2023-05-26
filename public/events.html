@@ -9,6 +9,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="navbar.js"></script>
+
 
   <style>
     .header {
@@ -158,8 +160,11 @@
         <li class="nav-item">
           <a class="nav-link" href="/events.html">Events</a>
         </li>
+        <li class="nav-item">
+					<a class="nav-link" href="/faqs.html">FAQs</a>
+				</li>
       </ul>
-      <span class="navbar-text" id="username"></span>
+      <span class="navbar-text" id="username" style="margin-right: 10px;"></span>
       <form action="/api/users/logout" method="get" id="logout-form" style="display: none;">
         <button type="submit" class="btn btn-danger">Logout</button>
       </form>
@@ -168,33 +173,6 @@
       </form>
     </div>
   </nav>
-
-  <script>
-    // Verifica se o usuário está logado e atualiza a interface
-    function updateInterface(isLoggedIn, user) {
-      if (isLoggedIn) {
-        document.getElementById('username').textContent = user.username;
-        document.getElementById('logout-form').style.display = 'block';
-        document.getElementById('login-button').style.display = 'none';
-      } else {
-        document.getElementById('username').textContent = '';
-        document.getElementById('logout-form').style.display = 'none';
-        document.getElementById('login-button').style.display = 'block';
-      }
-    }
-
-    function checkLoginStatus() {
-      fetch('/api/users/check-login')
-        .then(response => response.json())
-        .then(data => {
-          updateInterface(data.isLoggedIn, data.user);
-        });
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      checkLoginStatus();
-    });
-  </script>
 
   <header class="header">
     <h1>Creative Tech</h1>
@@ -218,6 +196,63 @@
     <div class="row" id="events">
     </div>
     <script>
+      function checkLoginStatus() {
+        fetch('/api/users/check-login')
+          .then(response => response.json())
+          .then(data => {
+            const isLoggedIn = data.isLoggedIn;
+            const userId = data.user ? data.user.id : null;
+            const buttons = document.querySelectorAll('.event-button');
+
+            buttons.forEach(button => {
+              const eventId = button.dataset.eventId;
+              const isGoing = button.dataset.isGoing === 'true';
+
+              if (isLoggedIn) {
+                if (isGoing) {
+                  button.textContent = 'Cancelar';
+                  button.classList.add('btn', 'btn-danger');
+                  button.setAttribute('onclick', `attendEvent(${eventId}, ${userId}, false)`);
+                } else {
+                  button.textContent = 'Participar';
+                  button.setAttribute('onclick', `attendEvent(${eventId}, ${userId}, true)`);
+                }
+              } else {
+                button.setAttribute('onclick', `window.location.href='/login.html'`);
+              }
+            });
+          });
+      }
+
+      function attendEvent(eventId, userId, isGoing) {
+        fetch(`/api/events/${eventId}/attendees`, {
+          method: isGoing ? 'POST' : 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId })
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              alert(data.error);
+            } else {
+              const attendeesSpan = document.getElementById(`attendees-${eventId}`);
+              attendeesSpan.innerText = `${data.attendees} participantes`;
+              checkLoginStatus();
+              location.reload();
+            }
+          });
+      }
+
+
+      // Função para formatar a data no formato "dd/mm/aaaa"
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+
       fetch('/api/events')
         .then(response => response.json())
         .then(events => {
@@ -232,29 +267,19 @@
                 <div class="card-body">
                   <h5 class="card-title">${event.name}</h5>
                   <p class="card-text">${event.description}</p>
-                  <p class="card-text"><small class="text-muted">${event.date}</small></p>
-                  <button class="btn btn-primary" onclick="attendEvent(${event.id}, true)">Participar</button>
-                  <button class="btn btn-secondary" onclick="attendEvent(${event.id}, false)">Cancelar</button>
+                  <p class="card-text"><small class="text-muted">${formatDate(event.date)}</small></p>
+                  <button class="btn btn-primary event-button" data-event-id="${event.id}" data-is-going="${event.isGoing}">Participar</button>
                   <span id="attendees-${event.id}">${event.attendees} participantes</span>
                 </div>
               </div>
             `;
             eventsContainer.appendChild(eventCard);
           });
-        });
 
-      function attendEvent(eventId, isGoing) {
-        fetch(`/api/events/${eventId}/attendees`, {
-          method: isGoing ? 'POST' : 'DELETE',
-          headers: { 'Content-Type': 'application/json' }
-        })
-          .then(response => response.json())
-          .then(data => {
-            const attendeesSpan = document.getElementById(`attendees-${eventId}`);
-            attendeesSpan.innerText = `${data.attendees} participantes`;
-          });
-      }
+          checkLoginStatus();
+        });
     </script>
+
   </div>
   <br>
 

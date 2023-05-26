@@ -23,10 +23,12 @@ app.use(session({
 const eventsRouter = require("./routes/eventsRoutes");
 const projectsRouter = require("./routes/projectsRoutes");
 const userRouter = require("./routes/userRoutes");
+const newsRouter = require("./routes/newsRoutes");
 
 app.use("/api/events", eventsRouter);
 app.use("/api/projects", projectsRouter);
 app.use("/api/users", userRouter);
+app.use("/api/news", newsRouter);
 
 app.get("/", function (req, res) {
   const username = req.session.user ? req.session.user.username : "";
