@@ -379,8 +379,23 @@
 			<div class="col-12 text-center">
 				<h3>Partners</h3>
 			</div>
+			<div class="row justify-content-center">
+				<div class="col-6 col-sm-3">
+					<img src="images/partners/isssca.png" alt="Company Logo 1" class="img-fluid">
+				</div>
+				<div class="col-6 col-sm-3">
+					<img src="images/partners/rero_ecgy.png" alt="Company Logo 2" class="img-fluid">
+				</div>
+				<div class="col-6 col-sm-3">
+					<img src="images/partners/ron.png" alt="Company Logo 3" class="img-fluid">
+				</div>
+				<div class="col-6 col-sm-3">
+					<img src="images/partners/ssparir.png" alt="Company Logo 4" class="img-fluid">
+				</div>
+			</div>
 		</div>
 	</div>
+
 	<br>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
 		<symbol id="bootstrap" viewBox="0 0 118 94">
@@ -425,15 +440,44 @@
 				</div>
 
 				<div class="col-md-5 offset-md-1 mb-3">
-					<form>
+					<form id="newsletterForm">
 						<h5>Subscribe to our newsletter</h5>
 						<p>Monthly digest of what's new and exciting from us.</p>
 						<div class="d-flex flex-column flex-sm-row w-100 gap-2">
-							<input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-							<button class="btn btn-primary ml-3" type="button">Subscribe</button>
+							<input id="newsletterEmail" type="email" class="form-control" placeholder="Email address"
+								required>
+							<button id="newsletterSubmit" class="btn btn-primary ml-3" type="submit">Subscribe</button>
 						</div>
 					</form>
 				</div>
+
+				<script>
+					document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+						event.preventDefault();
+
+						const emailInput = document.getElementById('newsletterEmail');
+						const email = emailInput.value;
+
+						if (!validateEmail(email)) {
+							alert('Please enter a valid email address.');
+							emailInput.focus();
+							return;
+						}
+
+						simulateSubscription(email);
+
+						emailInput.value = '';
+					});
+
+					function validateEmail(email) {
+						const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+						return emailRegex.test(email);
+					}
+
+					function simulateSubscription(email) {
+						console.log('Subscription request sent for email:', email);
+					}
+				</script>
 			</div>
 
 			<div class="d-flex flex-column flex-sm-row justify-content-between py-4 border-top"
