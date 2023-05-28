@@ -7,8 +7,8 @@ const pool = mysql.createPool({
     database: "creative_tech",
     connectionLimit: 20
 });
-*/
 
+*/
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
