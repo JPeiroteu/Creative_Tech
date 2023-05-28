@@ -268,15 +268,44 @@
                 </div>
 
                 <div class="col-md-5 offset-md-1 mb-3">
-                    <form>
+                    <form id="newsletterForm">
                         <h5>Subscribe to our newsletter</h5>
                         <p>Monthly digest of what's new and exciting from us.</p>
                         <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-                            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-                            <button class="btn btn-primary ml-3" type="button">Subscribe</button>
+                            <input id="newsletterEmail" type="email" class="form-control" placeholder="Email address"
+                                required>
+                            <button id="newsletterSubmit" class="btn btn-primary ml-3" type="submit">Subscribe</button>
                         </div>
                     </form>
                 </div>
+
+                <script>
+                    document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+
+                        const emailInput = document.getElementById('newsletterEmail');
+                        const email = emailInput.value;
+
+                        if (!validateEmail(email)) {
+                            alert('Please enter a valid email address.');
+                            emailInput.focus();
+                            return;
+                        }
+
+                        simulateSubscription(email);
+
+                        emailInput.value = '';
+                    });
+
+                    function validateEmail(email) {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        return emailRegex.test(email);
+                    }
+
+                    function simulateSubscription(email) {
+                        console.log('Subscription request sent for email:', email);
+                    }
+                </script>
             </div>
 
             <div class="d-flex flex-column flex-sm-row justify-content-between py-4 border-top"

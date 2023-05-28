@@ -161,8 +161,8 @@
           <a class="nav-link" href="/events.html">Events</a>
         </li>
         <li class="nav-item">
-					<a class="nav-link" href="/faqs.html">FAQs</a>
-				</li>
+          <a class="nav-link" href="/faqs.html">FAQs</a>
+        </li>
       </ul>
       <span class="navbar-text" id="username" style="margin-right: 10px;"></span>
       <form action="/api/users/logout" method="get" id="logout-form" style="display: none;">
@@ -289,7 +289,8 @@
         <div class="col-6 col-md-3 mb-3">
           <h5>Address</h5>
           <ul class="nav flex-column">
-            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Av. Dom Carlos I, 4</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Av. Dom Carlos I, 4</a>
+            </li>
             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">1200-649</a></li>
             <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Lisboa, Portugal</a></li>
           </ul>
@@ -304,15 +305,43 @@
         </div>
 
         <div class="col-md-5 offset-md-1 mb-3">
-          <form>
+          <form id="newsletterForm">
             <h5>Subscribe to our newsletter</h5>
             <p>Monthly digest of what's new and exciting from us.</p>
             <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-              <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-              <button class="btn btn-primary ml-3" type="button">Subscribe</button>
+              <input id="newsletterEmail" type="email" class="form-control" placeholder="Email address" required>
+              <button id="newsletterSubmit" class="btn btn-primary ml-3" type="submit">Subscribe</button>
             </div>
           </form>
         </div>
+
+        <script>
+          document.getElementById('newsletterForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const emailInput = document.getElementById('newsletterEmail');
+            const email = emailInput.value;
+
+            if (!validateEmail(email)) {
+              alert('Please enter a valid email address.');
+              emailInput.focus();
+              return;
+            }
+
+            simulateSubscription(email);
+
+            emailInput.value = '';
+          });
+
+          function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+          }
+
+          function simulateSubscription(email) {
+            console.log('Subscription request sent for email:', email);
+          }
+        </script>
       </div>
 
       <div class="d-flex flex-column flex-sm-row justify-content-between py-4 border-top"
